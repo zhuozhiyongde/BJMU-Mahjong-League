@@ -4,8 +4,8 @@ interface SeasonInfoProps {
 
 export function SeasonInfo({ hanchans }: SeasonInfoProps) {
   return (
-    <div className="text-center mb-6 p-3 bg-primary/5 rounded-lg">
-      <p className="text-lg font-medium text-foreground">
+    <div className="text-center mb-4 p-3 bg-primary/5 rounded-lg">
+      <p className="text-lg font-medium text-foreground max-sm:text-sm">
         该赛季已进行{hanchans}个半庄，请各位选手加油ヾ(°∇°)ノ゙
       </p>
       <p className="text-xs text-muted-foreground mt-1">

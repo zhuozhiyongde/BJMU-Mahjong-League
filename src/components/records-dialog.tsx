@@ -112,11 +112,11 @@ export function RecordsDialog({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+        <DialogContent className="max-h-[80vh] overflow-hidden flex flex-col sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
           <DialogHeader>
             <DialogTitle>输入记录</DialogTitle>
           </DialogHeader>
-          <div className="flex-1 overflow-y-auto space-y-4 py-4">
+          <div className="flex-1 overflow-y-auto py-4">
             {loading ? (
               <div className="text-center py-8 text-muted-foreground">
                 加载中...
@@ -126,61 +126,63 @@ export function RecordsDialog({
                 暂无输入记录
               </div>
             ) : (
-              records.map((record) => (
-                <div
-                  key={record.id}
-                  className="bg-muted/50 rounded-lg p-4"
-                >
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium">
-                        第 {record.id} 轮输入 ({record.timestamp})
-                      </h4>
-                      {hasTiedScores(record.results) && (
-                        <Badge variant="outline" className="text-orange-600">
-                          含同分
-                        </Badge>
-                      )}
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                {records.map((record) => (
+                  <div
+                    key={record.id}
+                    className="bg-muted/50 rounded-lg p-4"
+                  >
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium">
+                          第 {record.id} 轮输入 ({record.timestamp})
+                        </h4>
+                        {hasTiedScores(record.results) && (
+                          <Badge variant="outline" className="text-orange-600">
+                            含同分
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      {record.results
+                        .sort((a, b) => a.rank - b.rank)
+                        .map((result, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between items-center py-1 border-b border-dashed border-border last:border-0"
+                          >
+                            <span className="font-medium">
+                              {result.rank}. {result.memberName}
+                            </span>
+                            <span className={cn("font-mono", getRankColor(result.rank))}>
+                              {result.score * 100}
+                            </span>
+                          </div>
+                        ))}
+                    </div>
+                    <div className="mt-3 flex justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(record)}
+                      >
+                        <Pencil className="h-4 w-4 mr-1" />
+                        修改
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(record.id)}
+                        disabled={deletingId === record.id}
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        {deletingId === record.id ? "删除中..." : "删除"}
+                      </Button>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    {record.results
-                      .sort((a, b) => a.rank - b.rank)
-                      .map((result, index) => (
-                        <div
-                          key={index}
-                          className="flex justify-between items-center py-1 border-b border-dashed border-border last:border-0"
-                        >
-                          <span className="font-medium">
-                            {result.rank}. {result.memberName}
-                          </span>
-                          <span className={cn("font-mono", getRankColor(result.rank))}>
-                            {result.score * 100}
-                          </span>
-                        </div>
-                      ))}
-                  </div>
-                  <div className="mt-3 flex justify-end gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(record)}
-                    >
-                      <Pencil className="h-4 w-4 mr-1" />
-                      修改
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(record.id)}
-                      disabled={deletingId === record.id}
-                    >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      {deletingId === record.id ? "删除中..." : "删除"}
-                    </Button>
-                  </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
           <DialogFooter>
