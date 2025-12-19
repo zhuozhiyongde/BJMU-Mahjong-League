@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil, Copy } from "lucide-react";
 import { getGameRecords, deleteGameRecord } from "@/app/actions/games";
 import { GameResult, Member } from "@/lib/schema";
 import { toast } from "sonner";
@@ -109,6 +109,22 @@ export function RecordsDialog({
     return new Set(scores).size !== scores.length;
   };
 
+  const handleCopyRecord = async (record: GameRecordWithResults) => {
+    const sortedResults = [...record.results].sort((a, b) => b.score - a.score);
+    const lines = [
+      `【${record.timestamp}】`,
+      ...sortedResults.map((r) => `@${r.memberName} ${r.score * 100}`),
+    ];
+    const text = lines.join("\n");
+
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("已复制到剪贴板");
+    } catch {
+      toast.error("复制失败");
+    }
+  };
+
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -135,7 +151,7 @@ export function RecordsDialog({
                     <div className="flex justify-between items-center mb-3">
                       <div className="flex items-center gap-2">
                         <h4 className="font-medium">
-                          第 {record.id} 轮输入 ({record.timestamp})
+                          第 {record.id} 半庄 ({record.timestamp})
                         </h4>
                         {hasTiedScores(record.results) && (
                           <Badge variant="outline" className="text-orange-600">
@@ -162,6 +178,14 @@ export function RecordsDialog({
                         ))}
                     </div>
                     <div className="mt-3 flex justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleCopyRecord(record)}
+                      >
+                        <Copy className="h-4 w-4 mr-1" />
+                        复制
+                      </Button>
                       <Button
                         variant="outline"
                         size="sm"

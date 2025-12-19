@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Plus, Check, RotateCcw, AlertCircle } from "lucide-react";
+import { Plus, Check, RotateCcw, AlertCircle, Copy } from "lucide-react";
 import { submitGame } from "@/app/actions/games";
 import { toast } from "sonner";
 
@@ -35,6 +35,11 @@ const initialPlayers: PlayerInput[] = [
   { memberName: "", score: "" },
 ];
 
+interface SubmittedGame {
+  timestamp: string;
+  players: { memberName: string; score: number }[];
+}
+
 export function InputDialog({
   open,
   onOpenChange,
@@ -45,6 +50,7 @@ export function InputDialog({
   const [players, setPlayers] = useState<PlayerInput[]>(initialPlayers);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastSubmittedGame, setLastSubmittedGame] = useState<SubmittedGame | null>(null);
 
   const handleMemberChange = (index: number, value: string) => {
     const newPlayers = [...players];
@@ -63,6 +69,25 @@ export function InputDialog({
   const handleReset = () => {
     setPlayers(initialPlayers);
     setError(null);
+    setLastSubmittedGame(null);
+  };
+
+  const handleCopyLastGame = async () => {
+    if (!lastSubmittedGame) return;
+
+    const sortedPlayers = [...lastSubmittedGame.players].sort((a, b) => b.score - a.score);
+    const lines = [
+      `【${lastSubmittedGame.timestamp}】`,
+      ...sortedPlayers.map((p) => `@${p.memberName} ${p.score * 100}`)
+    ];
+    const text = lines.join("\n");
+
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("已复制到剪贴板");
+    } catch {
+      toast.error("复制失败");
+    }
   };
 
   const handleSubmit = async () => {
@@ -109,9 +134,18 @@ export function InputDialog({
       );
 
       if (result.success) {
+        const now = new Date();
+        const timestamp = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+        setLastSubmittedGame({
+          timestamp,
+          players: players.map((p, i) => ({
+            memberName: p.memberName.trim(),
+            score: scores[i],
+          })),
+        });
         toast.success("对局录入成功");
-        handleReset();
-        onOpenChange(false);
+        setPlayers(initialPlayers);
+        setError(null);
         onGameSubmitted();
       } else {
         setError(result.error || "提交失败");
@@ -186,6 +220,12 @@ export function InputDialog({
             <Check className="h-4 w-4 mr-1" />
             {isSubmitting ? "提交中..." : "完成录入"}
           </Button>
+          {lastSubmittedGame && (
+            <Button variant="outline" onClick={handleCopyLastGame}>
+              <Copy className="h-4 w-4 mr-1" />
+              复制
+            </Button>
+          )}
           <Button variant="destructive" onClick={handleReset}>
             <RotateCcw className="h-4 w-4 mr-1" />
             重置
