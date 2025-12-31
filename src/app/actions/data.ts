@@ -73,8 +73,8 @@ function parseLegacyPlayers(record: LegacyRecord): { ok: true; players: PlayerSc
 
 // 检查是否允许导入数据
 export async function checkImportEnabled() {
-    // 通过环境变量控制，生产环境设置 DISABLE_IMPORT=true 禁用导入
-    const disabled = process.env.DISABLE_IMPORT === 'true';
+    // 通过环境变量控制，生产环境设置 PRODUCTION=true 禁用导入
+    const disabled = process.env.PRODUCTION === 'true';
     return !disabled;
 }
 

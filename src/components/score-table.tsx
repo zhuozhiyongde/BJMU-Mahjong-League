@@ -19,6 +19,7 @@ interface ScoreTableProps {
   onRename: (name: string) => void;
   onDelete: (name: string) => void;
   lastUpdateTime?: string;
+  importEnabled?: boolean;
 }
 
 function formatPoints(points: number): string {
@@ -51,6 +52,7 @@ export function ScoreTable({
   onRename,
   onDelete,
   lastUpdateTime,
+  importEnabled = true,
 }: ScoreTableProps) {
   const columnCount = 16;
   return (
@@ -161,14 +163,16 @@ export function ScoreTable({
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-destructive hover:text-destructive"
-                          onClick={() => onDelete(member.name)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        {importEnabled && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
+                            onClick={() => onDelete(member.name)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

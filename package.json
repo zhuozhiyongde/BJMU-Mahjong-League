@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "DISABLE_IMPORT=true next start",
+    "start": "PRODUCTION=true next start",
     "lint": "eslint"
   },
   "dependencies": {

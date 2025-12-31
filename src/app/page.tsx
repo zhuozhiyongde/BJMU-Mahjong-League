@@ -78,6 +78,10 @@ export default function Home() {
     };
 
     const handleDelete = (name: string) => {
+        if (!importEnabled) {
+            toast.error('生产环境禁止删除选手');
+            return;
+        }
         setSelectedMember(name);
         setDeleteMemberOpen(true);
     };
@@ -126,7 +130,13 @@ export default function Home() {
 
                 <SeasonInfo hanchans={hanchans} />
 
-                <ScoreTable members={members} onRename={handleRename} onDelete={handleDelete} lastUpdateTime={lastUpdateTime} />
+                <ScoreTable
+                    members={members}
+                    onRename={handleRename}
+                    onDelete={handleDelete}
+                    lastUpdateTime={lastUpdateTime}
+                    importEnabled={importEnabled}
+                />
 
                 <footer className="mt-8 text-center text-sm text-muted-foreground py-4 border-t">
                     <p>BJMU League Season3 计分系统 &copy; 2025 <a href="https://arthals.ink" target="_blank" rel="noopener noreferrer" className="text-blue-500">Arthals</a></p>

@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Plus, Check, RotateCcw, AlertCircle, Copy } from "lucide-react";
 import { submitGame } from "@/app/actions/games";
@@ -51,6 +58,16 @@ export function InputDialog({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lastSubmittedGame, setLastSubmittedGame] = useState<SubmittedGame | null>(null);
+
+  const selectedMembers = players.map((p) => p.memberName).filter(Boolean);
+
+  const getAvailableMembers = (currentIndex: number) => {
+    return members.filter(
+      (m) =>
+        !selectedMembers.includes(m.name) ||
+        m.name === players[currentIndex].memberName
+    );
+  };
 
   const handleMemberChange = (index: number, value: string) => {
     const newPlayers = [...players];
@@ -178,17 +195,21 @@ export function InputDialog({
                 <label className="text-xs text-muted-foreground">
                   选手 {index + 1}
                 </label>
-                <Input
+                <Select
                   value={player.memberName}
-                  placeholder="输入或选择选手"
-                  list={`member-names-${index}`}
-                  onChange={(e) => handleMemberChange(index, e.target.value)}
-                />
-                <datalist id={`member-names-${index}`}>
-                  {members.map((m) => (
-                    <option key={m.id} value={m.name} />
-                  ))}
-                </datalist>
+                  onValueChange={(value) => handleMemberChange(index, value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="选择选手" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {getAvailableMembers(index).map((member) => (
+                      <SelectItem key={member.id} value={member.name}>
+                        {member.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-1">
                 <label className="text-xs text-muted-foreground">
