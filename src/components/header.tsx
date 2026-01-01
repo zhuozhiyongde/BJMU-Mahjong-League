@@ -26,7 +26,7 @@ export function Header({
   importEnabled = true,
 }: HeaderProps) {
   return (
-    <header className="border-b border-primary pb-4 mb-4">
+    <header className="border-b pb-4 mb-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold text-foreground max-sm:m-auto">
           BJMU League Season3 计分系统
