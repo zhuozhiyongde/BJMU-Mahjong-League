@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BJMU League Season3 计分系统",
-  description: "北京医科大学麻将联赛计分系统",
+  description: "北京大学医学部立直麻将联赛计分系统",
 };
 
 export default function RootLayout({
