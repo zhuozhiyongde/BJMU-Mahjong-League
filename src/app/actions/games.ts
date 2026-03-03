@@ -238,11 +238,24 @@ export async function clearAllGameHistory() {
         return { success: false, error: '清空功能已禁用（生产环境）' };
     }
 
-    // Delete everything (games + members)
+    // Delete game data only, preserve members
     await db.delete(schema.gameResults);
     await db.delete(schema.gameRecords);
-    await db.delete(schema.members);
+
+    // Reset all member stats to defaults
+    await db.update(schema.members).set({
+        points: 0,
+        basePoints: 0,
+        games: 0,
+        first: 0,
+        second: 0,
+        third: 0,
+        fourth: 0,
+        highestScore: null,
+        catCount: 0,
+        negativeCount: 0,
+    });
 
     revalidatePath('/');
-    return { success: true, message: '已清空所有对战历史与选手数据' };
+    return { success: true, message: '已清空所有对局数据，选手数据已保留' };
 }

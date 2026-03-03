@@ -87,10 +87,10 @@ export default function Home() {
     };
 
     const handleClearHistory = async () => {
-        const confirmed = confirm('将删除所有对局记录与所有选手数据。确定继续吗？');
+        const confirmed = confirm('将删除所有对局记录，选手数据将保留。确定继续吗？');
         if (!confirmed) return;
 
-        const confirmedAgain = confirm('再次确认：此操作不可撤销。确定清空全部数据？');
+        const confirmedAgain = confirm('再次确认：此操作不可撤销。确定清空所有对局数据？');
         if (!confirmedAgain) return;
 
         try {

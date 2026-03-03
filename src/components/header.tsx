@@ -78,7 +78,7 @@ export function Header({
                             onClick={onClearHistory}
                             className="w-8 px-0 has-[>svg]:px-0 sm:w-auto sm:px-3 sm:has-[>svg]:px-2.5">
                             <Trash2 className="h-4 w-4 sm:mr-1" />
-                            <span className="max-sm:hidden">清空全部数据</span>
+                            <span className="max-sm:hidden">清空对局数据</span>
                         </Button>
                     )}
                     {importEnabled && (
