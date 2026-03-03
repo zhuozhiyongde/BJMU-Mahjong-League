@@ -63,7 +63,7 @@ export default function Home() {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `BJMU_League_Season3_数据备份_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`;
+            a.download = `BJMU_League_Season4_数据备份_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`;
             a.click();
             URL.revokeObjectURL(url);
             toast.success('数据导出成功！');
@@ -139,7 +139,16 @@ export default function Home() {
                 />
 
                 <footer className="mt-8 text-center text-sm text-muted-foreground py-4 border-t">
-                    <p>BJMU League Season3 计分系统 &copy; 2025 <a href="https://arthals.ink" target="_blank" rel="noopener noreferrer" className="text-blue-500">Arthals</a></p>
+                    <p>
+                        BJMU League Season4 计分系统 &copy; 2025{' '}
+                        <a
+                            href="https://arthals.ink"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500">
+                            Arthals
+                        </a>
+                    </p>
                 </footer>
             </div>
 
