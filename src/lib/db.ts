@@ -14,6 +14,7 @@ const dbPath = path.join(dataDir, "bjmu-league.db");
 const sqlite = new Database(dbPath);
 
 export const db = drizzle(sqlite, { schema });
+export { sqlite };
 
 // Initialize database tables
 sqlite.exec(`

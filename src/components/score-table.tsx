@@ -52,8 +52,8 @@ export function ScoreTable({ members, onRename, onDelete, lastUpdateTime, import
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="text-center w-12">排名</TableHead>
-                                <TableHead className="text-center">选手</TableHead>
+                                <TableHead className="sticky left-0 z-20 bg-background text-center w-12 min-w-12 max-w-12">排名</TableHead>
+                                <TableHead className="sticky left-12 z-20 bg-background text-center shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]">选手</TableHead>
                                 <TableHead className="text-center">积分</TableHead>
                                 <TableHead className="text-center">素点</TableHead>
                                 <TableHead className="text-center">场数</TableHead>
@@ -80,8 +80,8 @@ export function ScoreTable({ members, onRename, onDelete, lastUpdateTime, import
                             ) : (
                                 members.map((member, index) => (
                                     <TableRow key={member.id}>
-                                        <TableCell className="text-center font-medium">{index + 1}</TableCell>
-                                        <TableCell className="text-center font-semibold">{member.name}</TableCell>
+                                        <TableCell className="sticky left-0 z-10 bg-background text-center font-medium w-12 min-w-12 max-w-12">{index + 1}</TableCell>
+                                        <TableCell className="sticky left-12 z-10 bg-background text-center font-semibold shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]">{member.name}</TableCell>
                                         <TableCell
                                             className={cn(
                                                 'text-center font-medium',

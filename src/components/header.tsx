@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
 import { Button } from '@/components/ui/button';
-import { Download, Upload, History, GitMerge, Plus, Trash2, UserPlus } from 'lucide-react';
+import { Download, Upload, History, GitMerge, Plus, Trash2, UserPlus, Archive } from 'lucide-react';
 
 interface HeaderProps {
     onExport: () => void;
@@ -71,6 +72,15 @@ export function Header({
                         <History className="h-4 w-4 sm:mr-1" />
                         <span className="max-sm:hidden">查看记录</span>
                     </Button>
+                    <Link href="/history">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-8 px-0 has-[>svg]:px-0 sm:w-auto sm:px-3 sm:has-[>svg]:px-2.5">
+                            <Archive className="h-4 w-4 sm:mr-1" />
+                            <span className="max-sm:hidden">历史赛季</span>
+                        </Button>
+                    </Link>
                     {importEnabled && (
                         <Button
                             variant="destructive"

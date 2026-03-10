@@ -1,6 +1,6 @@
 'use server';
 
-import { db, schema } from '@/lib/db';
+import { db, schema, sqlite } from '@/lib/db';
 import { eq, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { getMemberByName, updateMemberStats } from './members';
@@ -241,6 +241,9 @@ export async function clearAllGameHistory() {
     // Delete game data only, preserve members
     await db.delete(schema.gameResults);
     await db.delete(schema.gameRecords);
+
+    // Reset auto-increment counters for game tables
+    sqlite.exec(`DELETE FROM sqlite_sequence WHERE name IN ('game_records', 'game_results')`);
 
     // Reset all member stats to defaults
     await db.update(schema.members).set({
